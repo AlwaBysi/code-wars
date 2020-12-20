@@ -19,7 +19,7 @@ class LFUCache {
         const indexOfFindedEl = this.findElByKey(key);
         if (indexOfFindedEl === -1) return indexOfFindedEl;
         const removedItem = this.deleteItemByIndex(indexOfFindedEl)
-        this.addElByIndex(indexOfFindedEl, removedItem)
+        this.addElByPriory(indexOfFindedEl, removedItem)
         return removedItem.value
     }
 
@@ -30,7 +30,7 @@ class LFUCache {
             this.pushByPriory(key, value)
         } else {
             const removedItem = this.deleteItemByIndex(indexOfFindedEl)
-            this.addElByIndex(indexOfFindedEl, { key, value, useCount: removedItem.useCount })
+            this.addElByPriory(indexOfFindedEl, { key, value, useCount: removedItem.useCount })
         }
         return null
     }
@@ -76,7 +76,7 @@ class LFUCache {
         return removedItem[0]
     }
 
-    addElByIndex (index: number, { key, value, useCount}: CacheItem): void {
+    addElByPriory (index: number, { key, value, useCount}: CacheItem): void {
         const currentIndex = this.cache.findIndex(item => item.useCount < useCount)
         if (currentIndex === -1) {
             this.cache.unshift({ key, value, useCount: useCount + 1 })
